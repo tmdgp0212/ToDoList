@@ -5,12 +5,45 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>To-Do List</title>
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reset-css@5.0.1/reset.min.css">
   <link rel="stylesheet" href="./css/main.scss">
   <script src="./js/main.js"></script>
+  <script src="https://kit.fontawesome.com/f6ff2ab540.js" crossorigin="anonymous"></script>
 </head>
 <body>
   <div id="wrap">
+    <main>
+      <header>
+          <div class="bar">
+              <span class="date">
+                  22.01.01
+              </span>
+              <span class="time">
+                  00:00
+              </span>
+          </div>
+          <h1>To do List</h1>
+      </header>
+  
+      <section>
+        <ul>
+          <li>
+            <input type="checkbox">
+            <p>오늘 할 일</p>
+            <div class="btns">
+              <button class="edit">수정</button>
+              <button class="del">삭제</button>
+            </div>
+          </li>
+        </ul>
+      </section>
+    </main>
 
-  </div>
+    <form>
+        <input type="text" placeholder="add new to do" autocomplete="off" />
+        <button>+ add new</button>
+    </form>
+</div>
 </body>
 </html>
