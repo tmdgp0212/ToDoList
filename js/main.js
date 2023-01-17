@@ -1,9 +1,12 @@
 import { createTodo, readTodo, updateTodo, deleteTodo } from './response'
 
+const dateEl = document.querySelector('.date')
 const formEl = document.querySelector('form')
 const inputEl = formEl.querySelector('input')
 const ulEl = document.querySelector('ul')
-const dateEl = document.querySelector('.date')
+const delAllEl = document.querySelector('.delete-all > button')
+const noTodoEl = document.querySelector('.no-todo')
+const loadingEl = document.querySelector('.loading')
 
 let isEdit = false;
 
@@ -24,11 +27,25 @@ formEl.addEventListener('submit',async (e) => {
 
 //Todo데이터 재요청,리렌더링
 function readAndRender(){
+  loadingEl.style.display = 'block'
+  delAllEl.style.display = 'none'
   readTodo().then(res => renderTodo(res))
 }
 
 //Todo렌더링
 function renderTodo(todos) {
+  // 저장된 일정이 없을 때
+  if(todos.length === 0) { 
+    ulEl.innerHTML = ''
+    delAllEl.style.display = 'none'
+    loadingEl.style.display = 'none'
+    noTodoEl.style.display = 'block'
+    return
+  }
+
+  delAllEl.style.display = 'block'
+  noTodoEl.style.display = 'none'
+
   const liEls = todos.map(todo => {
     const liEl = document.createElement('li')
     const chkInput = document.createElement('input')
@@ -78,6 +95,8 @@ function renderTodo(todos) {
 
   ulEl.innerHTML = ''
   ulEl.append(...liEls)
+  loadingEl.style.display = 'none'
+  delAllEl.style.display = 'block'
 }
 
 //Todo 내용수정
@@ -90,19 +109,20 @@ function editTitle(e, todo) {
   todoInput.focus()
 
   //수정완료
-  todoInput.addEventListener('focusout',function(){
+  todoInput.addEventListener('focusout',async () => {
     if (isEdit && todoInput.textContent.trim().length > 0 && origin !== todoInput.textContent.trim()) {
       todo.title = todoInput.textContent.trim()
-      updateTodo(todo)
-      console.log('수정완료')
+      await updateTodo(todo)
     }
     if (todoInput.textContent.trim().length < 1){
       todoInput.textContent = origin
     }
     todoInput.removeAttribute('contenteditable')
     isEdit = false;
-  })
 
+    readAndRender()
+  })
+  //엔터키로 수정완료
   todoInput.addEventListener('keydown', event => {
     if (event.key === 'Enter' && !event.isComposing) {
       todoInput.blur()
@@ -110,8 +130,8 @@ function editTitle(e, todo) {
   })  
 }
 
-// 체크수정
-function todoCheck(liEl, chkInput, todo) {
+// 할 일 완료여부 수정
+async function todoCheck (liEl, chkInput, todo) {
   if(chkInput.checked){
     liEl.classList.add('checked');
     todo.done = true
@@ -119,8 +139,25 @@ function todoCheck(liEl, chkInput, todo) {
     liEl.classList.remove('checked');
     todo.done = false
   }
-  updateTodo(todo)
+
+  await updateTodo(todo)
+  readAndRender()
 }
+
+// 데이터 전체삭제
+delAllEl.addEventListener('click', async () => {
+  alert('정말로 일정을 모두 삭제하시겠습니까?')
+  const todos = await readTodo()
+  todos.map((todo) => {
+    deleteTodo(todo)
+  })
+  renderTodo([])
+})
+
+// 일정 추가 버튼
+noTodoEl.addEventListener('click',() => {
+  inputEl.focus()
+})
 
 //날짜정보
 function getDate() {
