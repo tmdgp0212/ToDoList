@@ -8,41 +8,28 @@
   <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reset-css@5.0.1/reset.min.css">
   <link rel="stylesheet" href="./css/main.scss">
-  <script src="./js/main.js"></script>
+  <script defer type="module" src="./js/main.js"></script>
   <script src="https://kit.fontawesome.com/f6ff2ab540.js" crossorigin="anonymous"></script>
 </head>
 <body>
   <div id="wrap">
     <main>
       <header>
-          <div class="bar">
-              <span class="date">
-                  22.01.01
-              </span>
-              <span class="time">
-                  00:00
-              </span>
+          <div class="date">
+            2023.01.01
           </div>
           <h1>To do List</h1>
       </header>
   
       <section>
         <ul>
-          <li>
-            <input type="checkbox">
-            <p>오늘 할 일</p>
-            <div class="btns">
-              <button class="edit">수정</button>
-              <button class="del">삭제</button>
-            </div>
-          </li>
         </ul>
       </section>
     </main>
 
     <form>
-        <input type="text" placeholder="add new to do" autocomplete="off" />
-        <button>+ add new</button>
+      <input type="text" placeholder="add new to do" autocomplete="off" />
+      <button>+ add new</button>
     </form>
 </div>
 </body>
