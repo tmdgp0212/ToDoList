@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/tmdgp0212/KDT4-M3#readme",
   "devDependencies": {
+    "@parcel/transformer-sass": "^2.8.2",
     "parcel": "^2.8.2"
   }
 }
