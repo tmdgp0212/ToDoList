@@ -4,9 +4,10 @@ const dateEl = document.querySelector('.date')
 const formEl = document.querySelector('form')
 const inputEl = formEl.querySelector('input')
 const ulEl = document.querySelector('ul')
-const delAllEl = document.querySelector('.delete-all > button')
+const delAllEl = document.querySelector('.options > button')
 const noTodoEl = document.querySelector('.no-todo')
 const loadingEl = document.querySelector('.loading')
+const selectEl = document.getElementById('view-options')
 
 let isEdit = false;
 
@@ -25,11 +26,31 @@ formEl.addEventListener('submit',async (e) => {
   inputEl.focus()
 });
 
+// 데이터 전체삭제
+delAllEl.addEventListener('click', async () => {
+  alert('정말로 일정을 모두 삭제하시겠습니까?')
+  const todos = await readTodo()
+  todos.map((todo) => {
+    deleteTodo(todo)
+  })
+  renderTodo([])
+})
+
+// 일정 추가 버튼
+noTodoEl.addEventListener('click',() => {
+  inputEl.focus()
+})
+
+//보기 설정
+selectEl.addEventListener('change', () => {
+  readAndRender()
+})
+
 //Todo데이터 재요청,리렌더링
 function readAndRender(){
   loadingEl.style.display = 'block'
   delAllEl.style.display = 'none'
-  readTodo().then(res => renderTodo(res))
+  readTodo().then(todos => renderTodo(todos))
 }
 
 //Todo렌더링
@@ -45,6 +66,14 @@ function renderTodo(todos) {
 
   delAllEl.style.display = 'block'
   noTodoEl.style.display = 'none'
+
+  if(selectEl.value === 'yet') {
+    //미완료일정
+    todos = todos.filter(todo => !todo.done)
+  } else if (selectEl.value === 'done') {
+    //완료일정
+    todos = todos.filter(todo => todo.done)
+  }
 
   const liEls = todos.map(todo => {
     const liEl = document.createElement('li')
@@ -143,21 +172,6 @@ async function todoCheck (liEl, chkInput, todo) {
   await updateTodo(todo)
   readAndRender()
 }
-
-// 데이터 전체삭제
-delAllEl.addEventListener('click', async () => {
-  alert('정말로 일정을 모두 삭제하시겠습니까?')
-  const todos = await readTodo()
-  todos.map((todo) => {
-    deleteTodo(todo)
-  })
-  renderTodo([])
-})
-
-// 일정 추가 버튼
-noTodoEl.addEventListener('click',() => {
-  inputEl.focus()
-})
 
 //날짜정보
 function getDate() {
