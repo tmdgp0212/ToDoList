@@ -33,6 +33,9 @@ function renderTodo(todos) {
     const liEl = document.createElement('li')
     const chkInput = document.createElement('input')
     const txtInput = document.createElement('p')
+    const divEl = document.createElement('div')
+    const createDateEl = document.createElement('span')
+    const editDateEl = document.createElement('span')
     const editBtn = document.createElement('button')
     const delBtn = document.createElement('button')
   
@@ -40,27 +43,23 @@ function renderTodo(todos) {
     editBtn.classList.add('edit')
     delBtn.classList.add('del')
 
-    todo.done ? (
+    todo.done ? ( // 인풋 체크여부 확인
       chkInput.checked = true,
       liEl.classList.add('checked')
       ) : chkInput.checked = false
 
     txtInput.textContent = todo.title
+    createDateEl.textContent = `created ${todo.createdAt.slice(2,10)}`
+    editDateEl.textContent = `updated ${todo.updatedAt.slice(2,10)}`
     editBtn.textContent = '수정'
     delBtn.textContent = '삭제'
     
-    liEl.append(chkInput, txtInput, editBtn, delBtn)
+    divEl.append(createDateEl, editDateEl)
+    liEl.append(chkInput, txtInput, divEl, editBtn, delBtn)
 
     // 체크박스클릭
     chkInput.addEventListener('click',() => {
-      if(chkInput.checked){
-        liEl.classList.add('checked');
-        todo.done = true
-      } else {
-        liEl.classList.remove('checked');
-        todo.done = false
-      }
-      updateTodo(todo)
+      todoCheck(liEl, chkInput, todo)
     })
 
     // 수정버튼클릭
@@ -109,6 +108,18 @@ function editTitle(e, todo) {
       todoInput.blur()
     }
   })  
+}
+
+// 체크수정
+function todoCheck(liEl, chkInput, todo) {
+  if(chkInput.checked){
+    liEl.classList.add('checked');
+    todo.done = true
+  } else {
+    liEl.classList.remove('checked');
+    todo.done = false
+  }
+  updateTodo(todo)
 }
 
 //날짜정보
