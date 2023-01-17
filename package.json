@@ -1,8 +1,7 @@
 {
   "name": "kdt4-m3",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.html",
+  "source": "index.html",
   "scripts": {
     "dev": "parcel index.html",
     "build": "parcel build index.html"
