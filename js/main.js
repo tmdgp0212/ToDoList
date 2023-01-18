@@ -20,6 +20,7 @@ formEl.addEventListener('submit',async (e) => {
   if(inputEl.value.trim().length < 1) return 
 
   await createTodo(inputEl.value.trim())
+  if(selectEl.value === 'done') {selectEl.value = 'all'}
   readAndRender()
 
   inputEl.value = ''
@@ -28,12 +29,13 @@ formEl.addEventListener('submit',async (e) => {
 
 // 데이터 전체삭제
 delAllEl.addEventListener('click', async () => {
-  alert('정말로 일정을 모두 삭제하시겠습니까?')
   const todos = await readTodo()
-  todos.map((todo) => {
-    deleteTodo(todo)
-  })
-  renderTodo([])
+  if(confirm('정말로 일정을 모두 삭제하시겠습니까?')){
+    todos.map((todo) => {
+      deleteTodo(todo)
+    })
+    renderTodo([])
+  }
 })
 
 // 일정 추가 버튼
@@ -49,7 +51,6 @@ selectEl.addEventListener('change', () => {
 //Todo데이터 재요청,리렌더링
 function readAndRender(){
   loadingEl.style.display = 'block'
-  delAllEl.style.display = 'none'
   readTodo().then(todos => renderTodo(todos))
 }
 
