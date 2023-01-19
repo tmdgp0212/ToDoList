@@ -1,3 +1,4 @@
+import Sortable from 'sortablejs';
 import { createTodo, readTodo, updateTodo, deleteTodo } from './response'
 
 const dateEl = document.querySelector('.date')
@@ -13,6 +14,10 @@ let isEdit = false;
 
 readAndRender()
 getDate()
+
+const sortable = new Sortable(ulEl, {
+  animation: 150
+});
 
 //Todo 입력
 formEl.addEventListener('submit',async (e) => {
