@@ -254,3 +254,80 @@ button {cursor: pointer;}
     }
   }//form
 }//#wrap
+
+@keyframes rise-up {
+  0% {transform: translateY(50vh);}
+  100% {transform: translateY(0);}
+}
+
+.bg--blur {
+  display: flex;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0,0,0,0.1);
+  backdrop-filter: blur(3px);
+  
+  .del--modal {
+    overflow: hidden;
+    width: 340px;
+    background-color: #fff;
+    border-radius: 3px;
+    animation: rise-up .5s;
+
+    header {
+      display: flex;
+      justify-content: flex-end;
+      padding: 5px;
+      background-color: $blue;
+
+      button {
+        color: $red;
+        font-weight: 800;
+        transition: color .2s;
+
+        &:hover {
+          transform: scale(1.2);
+          color: darken($red, 5%);
+        }
+      }
+    } //header
+
+    .del--check {
+      padding: 20px;
+
+      p {
+        margin-bottom: 20px;
+        text-align: center;
+      }
+
+      .confirm {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+
+        button {
+          width: 55px;
+          padding: 5px 8px;
+          border-radius: 3px;
+          transition: background-color .2s;
+          
+          &.yes {
+            background-color: $light-gray;
+
+            &:hover {background-color: darken($light-gray, 5%);}
+          }
+
+          &.no {
+            background-color: $red;
+
+            &:hover {background-color: darken($red, 5%);}
+          }
+        }
+      }
+    }
+  } //.del--modal
+} //.bg--blur

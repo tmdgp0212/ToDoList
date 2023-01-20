@@ -9,13 +9,17 @@ const delAllEl = document.querySelector('.options > button')
 const noTodoEl = document.querySelector('.no-todo')
 const loadingEl = document.querySelector('.loading')
 const selectEl = document.getElementById('view-options')
+const delModalEl = document.querySelector('.bg--blur')
+const confirmDelAllBtn = delModalEl.querySelector('button.yes')
+const rejectDelAllBtn = delModalEl.querySelector('button.no')
+const closeDelModalBtn = delModalEl.querySelector('button.close')
 
 let isEdit = false;
 
 readAndRender()
 getDate()
 
-const sortable = new Sortable(ulEl, {
+new Sortable(ulEl, {
   animation: 150
 });
 
@@ -32,17 +36,6 @@ formEl.addEventListener('submit',async (e) => {
   inputEl.focus()
 });
 
-// 데이터 전체삭제
-delAllEl.addEventListener('click', async () => {
-  const todos = await readTodo()
-  if(confirm('정말로 일정을 모두 삭제하시겠습니까?')){
-    todos.map((todo) => {
-      deleteTodo(todo)
-    })
-    renderTodo([])
-  }
-})
-
 // 일정 추가 버튼
 noTodoEl.addEventListener('click',() => {
   inputEl.focus()
@@ -51,6 +44,35 @@ noTodoEl.addEventListener('click',() => {
 //보기 설정
 selectEl.addEventListener('change', () => {
   readAndRender()
+})
+
+// 데이터 전체삭제
+delAllEl.addEventListener('click', async () => {
+  delModalEl.style.display = 'flex'
+
+  // 확인버튼 클릭
+  confirmDelAllBtn.addEventListener('click', async () => {
+    loadingEl.style.display = 'block'
+
+    const todos = await readTodo()
+
+    todos.map((todo) => {
+      deleteTodo(todo)
+    })
+    renderTodo([])
+
+    delModalEl.style.display = 'none'
+  })
+
+  // 취소버튼 클릭
+  rejectDelAllBtn.addEventListener('click', () => {
+    delModalEl.style.display = 'none'
+  })
+})
+
+// 모달 닫기버튼 클릭
+closeDelModalBtn.addEventListener('click',() => {
+  delModalEl.style.display = 'none'
 })
 
 //Todo데이터 재요청,리렌더링
